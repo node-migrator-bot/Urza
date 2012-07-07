@@ -37,7 +37,7 @@ if(require.main === module) {
           console.error('Urza app not found. Please run from inside an Urza app.');
           process.exit(1);
           return false;
-        } else if(!path.existsSync(dir + '/.urza')){
+        } else if(!fs.existsSync(dir + '/.urza')){
           return getAppRoot(dir);
         } else {
           appRoot = dir;
@@ -156,7 +156,7 @@ if(require.main === module) {
             appFile = root + appViewFile,
             viewFolder = root + appViewFolder,
             htmlFolders = appHtmlFolders.map(function(folder){ return root + folder; });
-        if(path.existsSync(appFile)){
+        if(fs.existsSync(appFile)){
           var clientContents = fs.readFileSync(appFile,'utf8'),
               viewFiles = fs.readdirSync(viewFolder),
               viewObjectPattern = /viewObject\s*=\s*(\{[^\{\}]*\})/,
@@ -226,7 +226,7 @@ if(require.main === module) {
             viewFolder = root + appViewFolder,
             htmlFiles = appHtmlFolders.map(function(folder){ return root + folder + name + '.html'; }),
             removeFiles = [viewFolder + name + '.js'].concat(htmlFiles);
-        if(path.existsSync(appFile)){
+        if(fs.existsSync(appFile)){
           var clientContents = fs.readFileSync(appFile,'utf8'),
               viewFiles = fs.readdirSync(viewFolder),
               viewObjectPattern = /viewObject\s*=\s*(\{[^\{\}]*\})/,
@@ -248,7 +248,7 @@ if(require.main === module) {
           fs.writeFileSync(appFile,newClient,'utf8');
           console.log('removing view files');
           removeFiles.forEach(function(file){
-            if(path.existsSync(file)){
+            if(fs.existsSync(file)){
               fs.unlinkSync(file);
             } else {
               console.warn('didn\'t find view file %s - assuming it was deleted and continuing.',file);
@@ -276,7 +276,7 @@ if(require.main === module) {
             htmlFiles = appHtmlFolders.map(function(folder){ return root + folder + 'partials/' + name + '.html'; });
         htmlFiles.forEach(function(file){
           console.log('removing partial %s',file);
-          if(path.existsSync(file)){
+          if(fs.existsSync(file)){
             fs.unlinkSync(file);
           } else {
             console.warn('didn\'t find partial file %s - assuming it was deleted and continuing.',file);
@@ -495,7 +495,7 @@ if(require.main === module) {
         return req.session && req.session.user;
       },
       componentcss : function(req,res){
-        if(!cssCache) cssCache = (path.existsSync(componentPath)) ? fs.readdirSync(componentPath) : [];
+        if(!cssCache) cssCache = (fs.existsSync(componentPath)) ? fs.readdirSync(componentPath) : [];
         return cssCache;
       }
     });
